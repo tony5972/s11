@@ -1,0 +1,28 @@
+create (p1:person{name:"deepak"}),
+        (p2:person{name:"saurabh"}),
+        (p3:person{name:"manoj"}),
+        (p4:person{name:"usha"}),
+        (c1:city{city_name:"pune"}),
+        (c2:city{city_name:"mumbai"}),
+        (c3:city{city_name:"kholapur"}),
+        (pro1:project{pro_name:"Finance"}),
+        (pro2:project{pro_name:"inventory"}),
+        (pro3:project{pro_name:"sale"})
+
+create (p2)-[:sibling{relation:"brother"}]->(p1),
+        (p4)-[:parent{relation:"mother"}]->(p1),
+        (p4)-[:parent{relation:"mother"}]->(p2),
+        (p3)-[:parent{relation:"father"}]->(p1),
+        (p3)-[:parent{relation:"father"}]->(p2),
+        (p1)-[:stays]->(c1),
+        (p2)-[:stays]->(c2),
+        (p3)-[:stays]->(c3),
+        (p4)-[:stays]->(c3),
+        (p1)-[:working_on]->(pro1),
+        (p2)-[:working_on]->(pro2),
+        (p3)-[:working_on]->(pro3) return p1,p2,p3,p4,c1,c2,c3,pro1,pro2,pro3
+
+A: match(per:person)-[p:parent]->(per1:person) return per
+B: match(per:person)-[:working_on]->(pro:project) where pro.pro_name="Finance" return per
+C: match(p:person)-[:stays]->(c:city) where c.city_name="mumbai" or c.city_name="pune" return p
+D: match(p:person)-[pp:parent]->(p1:person) where pp.relation="mother"  return p
